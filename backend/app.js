@@ -3,10 +3,9 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('./database/database');
 const User = require("./models/User");
-const Sauces = require('./models/Sauces');
 const bodyParser = require("body-parser");
 const userRoutes = require('./routes/user');
-
+const sauces = require("./routes/sauces");
 //Configuration de express
 const app = express();
 
@@ -29,17 +28,16 @@ app.use((req, res, next) => {
     next();
   });
 
+
+
+
+
+
 // Enregistre la route dans app , 
 app.use("/api/auth/", userRoutes);
 
-// app.post("/api/sauces", (req,res,next)=>{
-// const sauces = new Sauces 
-// })
-
-
-
-
-
+// Affichage de toutes les sauces 
+app.use("/api/sauces", sauces)
 
 //Exportaion du module express
 module.exports = app;
