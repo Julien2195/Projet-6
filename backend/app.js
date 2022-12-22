@@ -1,8 +1,9 @@
 // Importation du framework express
 const express = require('express');
-const morgan = require('morgan')
-const mongoose = require('./database/database')
-const User = require("./models/User")
+const morgan = require('morgan');
+const mongoose = require('./database/database');
+const User = require("./models/User");
+const Sauces = require('./models/Sauces');
 const bodyParser = require("body-parser");
 const userRoutes = require('./routes/user');
 
@@ -30,6 +31,15 @@ app.use((req, res, next) => {
 
 // Enregistre la route dans app , 
 app.use("/api/auth/", userRoutes);
+
+// app.post("/api/sauces", (req,res,next)=>{
+// const sauces = new Sauces 
+// })
+
+
+
+
+
 
 //Exportaion du module express
 module.exports = app;
