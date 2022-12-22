@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
     },
     filename : (req,file,callback)=>{
         //Remplace les espaces par des _ pour éviter les problèmes 
-        const name = filename.split(" ").join("_")
+        const name = file.originalname.split(" ").join("_")
         const extention = MIME_TYPES[file.mimetype];
         //Permets de generer un nom aleatoire (Date.now) pour eviter les erreurs 
         callback(null, name + '_'+ Date.now()+ extention)

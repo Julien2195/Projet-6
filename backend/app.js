@@ -5,7 +5,9 @@ const mongoose = require('./database/database');
 const User = require("./models/User");
 const bodyParser = require("body-parser");
 const userRoutes = require('./routes/user');
-const sauces = require("./routes/sauces");
+const saucesRoutes = require("./routes/sauces");
+const multer = require('./middleware/multer')
+const path = require('path');
 //Configuration de express
 const app = express();
 
@@ -28,17 +30,13 @@ app.use((req, res, next) => {
     next();
   });
 
-
-
-
-
-
 // Enregistre la route dans app , 
 app.use("/api/auth/", userRoutes);
 
 // Affichage de toutes les sauces 
-app.use("/api/sauces", sauces)
+app.use("/api/sauces", saucesRoutes)
 
+app.use('/images', express.static(path.join(__dirname, 'images')))
 //Exportaion du module express
 module.exports = app;
 
