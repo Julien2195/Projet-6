@@ -1,20 +1,23 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("../middleware/multer");
+const auth = require("../middleware/auth");
 const controllersSauces = require("../controllers/sauces");
 
-router.post("/", multer, controllersSauces.createSauce);
+router.post("/", auth, multer, controllersSauces.createSauce);
 
 // Affichage de toutes les sauces
-router.get("/", controllersSauces.showSauces);
+router.get("/", auth, controllersSauces.showSauces);
 
 //Recupere la sauce par son id
-router.get("/:id", controllersSauces.getSaucebyId);
+router.get("/:id", auth, controllersSauces.getSaucebyId);
 
 //Modifie la sauce
-router.put("/:id", multer, controllersSauces.modifySauces);
+router.put("/:id", auth, multer, controllersSauces.modifySauces);
 
 //Surprimer la sauce
-router.delete("/:id", controllersSauces.deleteSauces);
+router.delete("/:id", auth, controllersSauces.deleteSauces);
 
+//likes/dislikes
+router.post("/:id/like", auth, controllersSauces.likeSauces);
 module.exports = router;
