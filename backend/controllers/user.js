@@ -1,10 +1,9 @@
 //Importation de bcrypt pour hash le mot de passe
 const bcrypt = require("bcrypt");
-const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
 //Importation du model user
 const User = require("../models/User");
-
 
 exports.signup = (req, res, next) => {
     bcrypt
@@ -39,16 +38,14 @@ exports.login = (req, res, next) => {
                                 .json({ message: "identifiant/mot de passe incorrect !" });
                         } else {
                             res.status(200).json({
-                                    userId: user._id,
-                                    token: jwt.sign({
-                                            user: user
-                                        },
+                                userId: user._id,
+                                token: jwt.sign({
+                                        user: user,
+                                    },
 
-                                        process.env.TOKEN, { expiresIn: '24h' }
-                                    )
-                                }
-
-                            )
+                                    process.env.TOKEN, { expiresIn: "24h" }
+                                ),
+                            });
                         }
                     })
 

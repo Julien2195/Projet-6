@@ -1,5 +1,6 @@
 const Sauces = require("../models/Sauces");
 const fs = require("fs");
+const path = require("path")
 const { findOne } = require("../models/User");
 //enregistre  les sauces dans la bdd
 exports.createSauce = (req, res, next) => {
@@ -34,19 +35,23 @@ exports.getSaucebyId = (req, res, next) => {
 };
 
 //Modifie la sauce
-exports.modifySauces = (req, res, next) => {
-    const saucesObject = req.file ?
-        {
-            ...JSON.parse(req.body.sauce),
-            imageUrl: `${req.protocol}://${req.get("host")}/images/${
+exports.modifySauces = async(req, res, next) => {
+    const sauce = await Sauces.findOne({ _id: req.params.id })
+
+    const fileName = path.basename(sauce.imageUrl);
+    if (fileName != req.file.filename) {
+        fs.unlinkSync("./images/" + fileName);
+    }
+    const saucesObject = req.file ? {
+        ...JSON.parse(req.body.sauce),
+        imageUrl: `${req.protocol}://${req.get("host")}/images/${
           req.file.filename
         }`,
-        } :
-        {...req.body };
+    } : {...req.body };
 
     Sauces.updateOne({ _id: req.params.id }, {...saucesObject, _id: req.params.id })
         .then(() => res.status(200).json({ message: "objet modifié !" }))
-        .catch(() => res.status(400).json({ error }));
+        .catch((error) => res.status(400).json({ error }));
 };
 
 //Surprimer la sauce
