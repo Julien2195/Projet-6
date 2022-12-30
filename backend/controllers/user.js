@@ -1,16 +1,20 @@
 //Importation de bcrypt pour hash le mot de passe
 const bcrypt = require("bcrypt");
+const cryptoJs = require("crypto-js");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 //Importation du model user
 const User = require("../models/User");
 
+
 exports.signup = (req, res, next) => {
+    const cryptEmail = cryptoJs.HmacSHA256(req.body.email, `${process.env.KEY_SECRET}`).toString();
+    console.log(cryptEmail);
     bcrypt
         .hash(req.body.password, 10)
         .then((hash) => {
             const user = new User({
-                email: req.body.email,
+                email: cryptEmail,
                 password: hash,
             });
             user
@@ -49,9 +53,7 @@ exports.login = (req, res, next) => {
                         }
                     })
 
-                .catch(() =>
-                    res.status(500).json({ message: "erreur serveur !" })
-                );
+                .catch(() => res.status(500).json({ message: "erreur serveur !" }));
             }
         })
         .catch(() => res.status(500).json({ message: "erreur serveur ! " }));
