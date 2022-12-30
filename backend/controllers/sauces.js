@@ -1,7 +1,8 @@
 const Sauces = require("../models/Sauces");
 const fs = require("fs");
-const path = require("path")
-const { findOne } = require("../models/User");
+const path = require('path');
+
+
 //enregistre  les sauces dans la bdd
 exports.createSauce = (req, res, next) => {
     let saucesObject = JSON.parse(req.body.sauce);
@@ -36,10 +37,11 @@ exports.getSaucebyId = (req, res, next) => {
 
 //Modifie la sauce
 exports.modifySauces = async(req, res, next) => {
+
     const sauce = await Sauces.findOne({ _id: req.params.id })
 
     const fileName = path.basename(sauce.imageUrl);
-    if (fileName != req.file.filename) {
+    if (fileName) {
         fs.unlinkSync("./images/" + fileName);
     }
     const saucesObject = req.file ? {
@@ -71,25 +73,16 @@ exports.likeSauces = (req, res, next) => {
                 if (sauce.usersLiked.indexOf(userId) == -1) {
                     sauce.likes++;
                     sauce.usersLiked.push(userId);
-                } else if (sauce.usersDisliked.indexOf(userId) > -1) {
-                    sauce.dislikes--;
-                    sauce.usersDisliked.splice(sauce.usersDisliked.indexOf(userId), 1);
                 }
             } else if (like === 0) {
                 if (sauce.usersLiked.indexOf(userId) > -1) {
                     sauce.likes--;
                     sauce.usersLiked.splice(sauce.usersLiked.indexOf(userId), 1);
-                } else if (sauce.usersDisliked.indexOf(userId) > -1) {
-                    sauce.dislikes--;
-                    sauce.usersDisliked.splice(sauce.usersDisliked.indexOf(userId), 1);
                 }
             } else if (like === -1) {
                 if (sauce.usersDisliked.indexOf(userId) == -1) {
                     sauce.dislikes++;
                     sauce.usersDisliked.push(userId);
-                } else if (sauce.usersLiked.indexOf(userId) > -1) {
-                    sauce.likes--;
-                    sauce.usersLiked.splice(sauce.usersLiked.indexOf(userId), 1);
                 }
             }
             sauce.save();

@@ -49,10 +49,10 @@ exports.login = (req, res, next) => {
                         }
                     })
 
-                .catch((error) =>
+                .catch(() =>
                     res.status(500).json({ message: "erreur serveur !" })
                 );
             }
         })
-        .catch((error) => res.status(500).json({ message: "erreur serveur ! " }));
+        .catch(() => res.status(500).json({ message: "erreur serveur ! " }));
 };
