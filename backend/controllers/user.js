@@ -9,7 +9,6 @@ const User = require("../models/User");
 
 exports.signup = (req, res, next) => {
     const cryptEmail = cryptoJs.HmacSHA256(req.body.email, `${process.env.KEY_SECRET}`).toString();
-    console.log(cryptEmail);
     bcrypt
         .hash(req.body.password, 10)
         .then((hash) => {

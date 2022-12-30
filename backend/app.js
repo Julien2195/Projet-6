@@ -1,15 +1,18 @@
-const express = require('express');
-const mongoose = require('./database/database');
+const express = require("express");
+const mongoose = require("./database/database");
 const User = require("./models/User");
 const bodyParser = require("body-parser");
-const userRoutes = require('./routes/user');
+const userRoutes = require("./routes/user");
 const saucesRoutes = require("./routes/sauces");
-const multer = require('./middleware/multer')
-const path = require('path');
+const multer = require("./middleware/multer");
+const path = require("path");
+const helmet = require("helmet");
 //Configuration de express
 const app = express();
+// Helmet: Protection du http  contre les vulnéribilités
+app.use(helmet());
 
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -24,12 +27,12 @@ app.use((req, res, next) => {
     next();
 });
 
-// Enregistre la route dans app , 
+// Enregistre la route dans app ,
 app.use("/api/auth/", userRoutes);
 
-// Affichage de toutes les sauces 
-app.use("/api/sauces", saucesRoutes)
+// Affichage de toutes les sauces
+app.use("/api/sauces", saucesRoutes);
 
-app.use('/images', express.static(path.join(__dirname, 'images')))
-    //Exportaion du module express
+app.use("/images", express.static(path.join(__dirname, "images")));
+//Exportaion du module express
 module.exports = app;
