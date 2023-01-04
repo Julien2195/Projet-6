@@ -25,7 +25,8 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-    User.findOne({ email: req.body.email })
+    const cryptEmail = cryptoJs.HmacSHA256(req.body.email, `${process.env.KEY_SECRET}`).toString();
+    User.findOne({ email: cryptEmail })
         .then((user) => {
             if (user == null) {
                 res

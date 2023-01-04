@@ -10,7 +10,9 @@ const helmet = require("helmet");
 //Configuration de express
 const app = express();
 // Helmet: Protection du http  contre les vulnéribilités
-app.use(helmet());
+helmet({
+    crossOriginResourcePolicy: false,
+})
 
 app.use(bodyParser.json());
 
@@ -31,7 +33,7 @@ app.use((req, res, next) => {
 app.use("/api/auth/", userRoutes);
 
 // Affichage de toutes les sauces
-app.use("/api/sauces", saucesRoutes);
+app.use("/api/sauces/", saucesRoutes);
 
 app.use("/images", express.static(path.join(__dirname, "images")));
 //Exportaion du module express
