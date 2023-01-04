@@ -78,6 +78,9 @@ exports.likeSauces = (req, res, next) => {
                 if (sauce.usersLiked.indexOf(userId) > -1) {
                     sauce.likes--;
                     sauce.usersLiked.splice(sauce.usersLiked.indexOf(userId), 1);
+                } else if (sauce.usersDisliked.indexOf(userId) > -1) {
+                    sauce.dislikes--
+                        sauce.usersDisliked.splice(sauce.usersDisliked.indexOf(userId), 1)
                 }
             } else if (like === -1) {
                 if (sauce.usersDisliked.indexOf(userId) == -1) {
